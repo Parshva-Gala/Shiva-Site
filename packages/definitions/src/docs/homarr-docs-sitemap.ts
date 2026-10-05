@@ -284,6 +284,8 @@ export type HomarrDocumentationPath =
   | "/api-reference"
   | "/about-us"
   | "/sitemap.xml"
+  | "/blog"
+  | "/search"
   | "/docs/integrations/autobrr"
   | "/docs/integrations/jellystat"
   | "/docs/integrations/scrutiny"

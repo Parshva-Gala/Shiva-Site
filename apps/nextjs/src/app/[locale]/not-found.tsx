@@ -1,5 +1,5 @@
-import { Center } from "@mantine/core";
+import classes from "./fallback.module.css";
 
 export default function CommonNotFound() {
-  return <Center h="100vh">404</Center>;
+  return <div className={classes.center}>404</div>;
 }

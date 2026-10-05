@@ -21,6 +21,7 @@
     "./infrastructure/db": "./src/infrastructure/db/index.ts",
     "./infrastructure/db/env": "./src/infrastructure/db/env.ts",
     "./infrastructure/db/constants": "./src/infrastructure/db/constants.ts",
+    "./infrastructure/shiva-assets": "./src/infrastructure/shiva-assets.ts",
     "./infrastructure/certificates": "./src/infrastructure/certificates/index.ts",
     "./infrastructure/certificates/hostnames/db/sqlite": "./src/infrastructure/certificates/hostnames/db/sqlite.ts",
     "./infrastructure/certificates/hostnames/db/postgresql": "./src/infrastructure/certificates/hostnames/db/postgresql.ts",

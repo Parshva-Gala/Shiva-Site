@@ -22,16 +22,13 @@ import { getRscAssistantAvailabilityAsync } from "@homarr/api/assistant-availabi
 import { getRscUserSettingsAsync } from "@homarr/api/user-server";
 import { auth } from "@homarr/auth/next";
 import { createLogger } from "@homarr/core/infrastructure/logs";
-import { ModalProvider } from "@homarr/modals";
 import { Notifications } from "@homarr/notifications";
 import { SettingsProvider } from "@homarr/settings";
-import { SpotlightProvider } from "@homarr/spotlight";
 import type { SupportedLanguage } from "@homarr/translation";
 import { isLocaleRTL, isLocaleSupported } from "@homarr/translation";
 import { getI18n } from "@homarr/translation/server";
 import { resolveHomarrUrlConfig } from "@homarr/workshop/schema";
 
-import { AssistantGate } from "~/components/assistant/assistant-gate";
 import { CrowdinLiveTranslation } from "~/components/layout/crowdin-live-translation";
 import { env } from "~/env";
 
@@ -44,6 +41,7 @@ import { JotaiProvider } from "./_client-providers/jotai";
 import { CustomMantineProvider } from "./_client-providers/mantine";
 import { AuthProvider } from "./_client-providers/session";
 import { TRPCReactProvider } from "./_client-providers/trpc";
+import { RouteFeatureProviders } from "./_client-providers/route-features";
 import { composeWrappers } from "./compose";
 
 const fontSans = Inter({
@@ -173,10 +171,8 @@ export default async function Layout(props: {
     (innerProps) => (
       <CustomMantineProvider {...innerProps} defaultColorScheme={colorScheme} branding={serverSettings.branding} />
     ),
-    (innerProps) => <ModalProvider {...innerProps} />,
-    (innerProps) => <SpotlightProvider {...innerProps} />,
     (innerProps) => (
-      <AssistantGate availability={session ? assistantAvailability : "unauthenticated"} {...innerProps} />
+      <RouteFeatureProviders availability={session ? assistantAvailability : "unauthenticated"} {...innerProps} />
     ),
   ]);
 

@@ -59,4 +59,10 @@ describe("createDocumentationLink parameter validation", () => {
     const result = createDocumentationLink("/docs/getting-started", undefined, { version: "1.0" });
     expect(result).toBe("https://homarr.dev/docs/getting-started?version=1.0");
   });
+
+  test("supports the search route when it is absent from the sitemap", () => {
+    expect(createDocumentationLink("/search", undefined, { q: "appearance" })).toBe(
+      "https://homarr.dev/search?q=appearance",
+    );
+  });
 });

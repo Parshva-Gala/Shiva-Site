@@ -1,3 +1,4 @@
+import path from "node:path";
 import { migrate } from "drizzle-orm/node-postgres/migrator";
 
 import { createPostgresDb, createSharedDbConfig } from "@homarr/core/infrastructure/db";
@@ -15,7 +16,7 @@ const migrateAsync = async () => {
 
   await migrate(db, { migrationsFolder });
   await seedDataAsync(db as unknown as Database);
-  await applyCustomMigrationsAsync(db as unknown as Database);
+  await applyCustomMigrationsAsync(db as unknown as Database, path.resolve(migrationsFolder, "..", "shiva"));
 };
 
 migrateAsync()

@@ -65,6 +65,22 @@ export const OnboardingWordmark = ({
   };
 
   const hasVisibilityControls = showAppName !== undefined || showAppLogo !== undefined;
+  // The fresh welcome screen has no saved branding yet. Keep its local source default fully offline.
+  const localWelcomeDefault =
+    process.env.SHIVA_LOCAL_WEBSOCKET === "true" &&
+    appName === undefined &&
+    logoImageUrl === undefined &&
+    !hasVisibilityControls &&
+    primaryColor === undefined &&
+    secondaryColor === undefined;
+  if (localWelcomeDefault) {
+    return (
+      <div className={classes.customBrand} data-large={large || undefined} aria-label="SHIVA">
+        <img className={classes.customBrandImage} src="/shiva/logo.svg" alt="" />
+        <span>SHIVA</span>
+      </div>
+    );
+  }
   const resolvedAppName = appName?.trim() || "Homarr";
   const shouldRenderDefaultWordmark = showAppLogo && showAppName && !logoImageUrl && resolvedAppName === "Homarr";
 

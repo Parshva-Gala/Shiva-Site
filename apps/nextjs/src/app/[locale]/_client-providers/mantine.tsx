@@ -10,7 +10,7 @@ import { clientApi } from "@homarr/api/client";
 import { useSession } from "@homarr/auth/client";
 import { parseCookies, setClientCookie } from "@homarr/common";
 import { colorSchemeCookieKey } from "@homarr/definitions";
-import { theme } from "@homarr/ui";
+import { theme } from "@homarr/ui/theme";
 import type { ServerSettings } from "@homarr/server-settings";
 
 import { createBrandTheme } from "~/theme/branding";

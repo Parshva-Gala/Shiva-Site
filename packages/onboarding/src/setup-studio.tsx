@@ -170,7 +170,7 @@ export const SetupStudio = ({ environment, assistantConfiguration }: OnboardingS
   const [selectedLocale, setSelectedLocale] = useState(currentLocale);
   const [serverOrigin, setServerOrigin] = useState(environment.serverOrigin);
   const [urlMode, setUrlMode] = useState<UrlTemplateMode>("hostPort");
-  const [analyticsEnabled, setAnalyticsEnabled] = useState(true);
+  const [analyticsEnabled, setAnalyticsEnabled] = useState(process.env.SHIVA_LOCAL_WEBSOCKET !== "true");
   const [selectedKinds, setSelectedKinds] = useState<IntegrationKind[]>([]);
   const [selectedIntegrationSourceIds, setSelectedIntegrationSourceIds] = useState<string[]>([]);
   const [drafts, setDrafts] = useState<IntegrationDraft[]>([]);

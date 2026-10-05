@@ -1,5 +1,20 @@
 # Homarr Agent Rules
 
+## SHIVA project constraints
+
+- Base is Homarr v2.1.2, commit 473b6cb7c46a147886c41a9b1fabe36d10b6b854. Keep Apache-2.0 license and upstream notices.
+- SHIVA is a single-user personal product. Preserve host authentication, Mantine, tRPC and Drizzle migrations; no parallel account system or database.
+- Keep SHIVA UI in `apps/nextjs/src/shiva`, validation in `packages/validation/src/shiva.ts`, API in its isolated router, and native records in host migration-managed tables.
+- Use Asia/Kolkata, INR and Indian number formatting. ClickUp owns tasks, Obsidian notes, Excel financial calculations, and calendar providers appointments. No account writes or live integrations in milestone one.
+- Theme exports contain appearance only; validate strictly. Never execute theme JavaScript or mix credentials/personal records into themes. Theme/layout changes never mutate Shopping.
+- Explicitly label samples. Empty and planned modules must be honest. Connected requires successful verification. Keep secrets server-side and out of tracked files, logs and exports.
+- Bind app, Redis and any development services to localhost. No public hosting, tunnels, paid services or remote publication without explicit user authorization.
+- The user authorized source maintenance in `Parshva-Gala/Shiva-Site`. Publish reviewed source branches and pull requests there; preserve upstream ancestry and keep every inherited automation job restricted to `homarr-labs/homarr`. This authorization does not include app deployment, real account writes, secrets, personal databases, uploaded images or private verification artifacts.
+- Confirm Shopping deletion. Validate client and server inputs; scope all records to authenticated owner. Do not import real professional records as samples.
+- Run focused schema/security/persistence tests, type checks, lint and production build for the foundation. Inspect desktop/mobile in an actual browser. Record unexecuted or failed checks honestly.
+- Windows setup, backup/restore and upstream update instructions belong in README and `docs/shiva`. Do not overwrite existing `.env` or personal data.
+- Treat `docs/shiva/PERFORMANCE.md` as a release requirement: production responsiveness, realistic data, memory/soak checks and desktop/mobile evidence. Keep ordinary settings <=50 KiB, image bytes out of routine settings mutations, lists bounded and provider refresh independent of native page loading. Never report unmeasured targets or lab proxies as actual production/field results.
+
 ## Repository Structure
 
 ```

@@ -5,7 +5,7 @@ import { dbEnv } from "@homarr/core/infrastructure/db/env";
 
 export default {
   dialect: "postgresql",
-  schema: "./schema",
+  schema: "./schema/postgresql.ts",
   casing: DB_CASING,
 
   dbCredentials: dbEnv.URL

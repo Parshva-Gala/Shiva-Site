@@ -14,6 +14,7 @@
     "./server-settings-server": "./src/server-settings-server.ts",
     "./user-server": "./src/user-server.ts",
     "./server": "./src/server.ts",
+    "./shiva-server": "./src/shiva-server.ts",
     "./websocket": "./src/websocket.ts",
     "./shared": "./src/shared.ts",
     "./open-api": "./src/open-api.ts",

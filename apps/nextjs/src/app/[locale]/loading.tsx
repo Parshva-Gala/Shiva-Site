@@ -1,9 +1,10 @@
-import { Center, Loader } from "@mantine/core";
+import classes from "./fallback.module.css";
 
 export default function CommonLoading() {
   return (
-    <Center h="100vh">
-      <Loader />
-    </Center>
+    <output className={classes.center} aria-busy="true">
+      <span className={classes.spinner} aria-hidden="true" />
+      <span>Loading…</span>
+    </output>
   );
 }

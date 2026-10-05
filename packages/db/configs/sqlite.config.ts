@@ -5,7 +5,7 @@ import { dbEnv } from "@homarr/core/infrastructure/db/env";
 
 export default {
   dialect: "sqlite",
-  schema: "./schema",
+  schema: "./schema/sqlite.ts",
   casing: DB_CASING,
   dbCredentials: { url: dbEnv.URL },
   out: "./migrations/sqlite",

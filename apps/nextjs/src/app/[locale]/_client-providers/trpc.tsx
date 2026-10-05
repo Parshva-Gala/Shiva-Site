@@ -39,31 +39,19 @@ import { widgetQueryRefetchIntervals } from "@homarr/widgets/refetch-intervals";
 import { useAuthContext } from "./session";
 import { getSessionQueryScope, SessionQueryScopeGuard } from "./session-query-scope";
 import { createQueryRetry } from "./query-retry";
+import { getWebsocketUrl } from "./websocket-url";
 
 const DevelopmentTools =
   process.env.NODE_ENV === "development"
     ? dynamic(() => import("./development-tools").then(({ DevelopmentTools: Tools }) => Tools), { ssr: false })
     : () => null;
 
-const getWebSocketProtocol = () => {
-  if (typeof window === "undefined") {
-    return "ws";
-  }
-
-  return window.location.protocol === "https:" ? "wss" : "ws";
-};
-
 const constructWebsocketUrl = () => {
-  const fallback = `${getWebSocketProtocol()}://localhost:3001/websockets`;
-  if (typeof window === "undefined") {
-    return fallback;
-  }
-
-  if (env.NODE_ENV === "development") {
-    return fallback;
-  }
-
-  return `${getWebSocketProtocol()}://${window.location.hostname}:${window.location.port}/websockets`;
+  return getWebsocketUrl({
+    location: typeof window === "undefined" ? undefined : window.location,
+    development: env.NODE_ENV === "development",
+    localSourceMode: process.env.SHIVA_LOCAL_WEBSOCKET === "true",
+  });
 };
 
 export function TRPCReactProvider({ children }: PropsWithChildren) {

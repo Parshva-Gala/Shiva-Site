@@ -124,9 +124,22 @@ export const parseBrandingSettings = (value: unknown): BrandingSettings => {
   return result.data;
 };
 
+// SHIVA: supported branding defaults for fresh installations. Keep the nullable host contract.
+const shivaDefaultBranding: BrandingSettings = {
+  ...defaultBrandingSettings,
+  appName: "SHIVA",
+  logoImageUrl: "/shiva/logo.svg",
+  faviconImageUrl: "/shiva/logo.svg",
+  primaryColor: "#78aaff",
+  secondaryColor: "#78aaff",
+  signInBackgroundImageUrl: "/shiva/midnight.svg",
+  signInBackgroundOverlay: 0.55,
+};
+
 export const defaultServerSettings = {
   analytics: {
-    enableGeneral: true,
+    // SHIVA: privacy-first defaults for new local installations.
+    enableGeneral: false,
     instanceId: null as string | null,
     lastSuccessfulSnapshotAt: null as string | null,
   },
@@ -143,12 +156,13 @@ export const defaultServerSettings = {
     forceDisableStatus: false,
   },
   user: {
-    enableGravatar: true,
+    enableGravatar: false,
   },
   appearance: {
     defaultColorScheme: "auto" as ColorScheme,
   },
-  branding: defaultBrandingSettings,
+  // SHIVA: use supported host branding defaults; existing saved branding is preserved.
+  branding: shivaDefaultBranding,
   culture: {
     defaultLocale: "en" as SupportedLanguage,
   },

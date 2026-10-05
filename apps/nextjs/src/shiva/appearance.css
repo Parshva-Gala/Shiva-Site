@@ -1,0 +1,170 @@
+/* SHIVA appearance stays scoped to its workspace and portaled components. */
+.shiva-root {
+  min-height: 100dvh;
+  color: var(--shiva-text);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  line-height: 1.55;
+  color-scheme: dark;
+}
+.shiva-root #shiva-portals {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+.shiva-root[data-mantine-color-scheme="light"] {
+  color-scheme: light;
+}
+.shiva-root :focus-visible {
+  outline: 2px solid var(--shiva-accent);
+  outline-offset: 3px;
+}
+.shiva-root ::selection {
+  background: var(--shiva-accent);
+  color: var(--shiva-bg);
+}
+.shiva-root .mantine-Input-input::placeholder {
+  color: var(--shiva-muted);
+  opacity: 1;
+}
+.shiva-root .mantine-Combobox-option[data-combobox-selected],
+.shiva-root .mantine-Combobox-option:hover,
+.shiva-root .mantine-Menu-item:hover {
+  background: var(--shiva-hover);
+}
+.shiva-root .mantine-Combobox-option[data-checked] {
+  color: var(--shiva-accent);
+}
+.shiva-root .mantine-Menu-label {
+  color: var(--shiva-muted);
+}
+.shiva-root .mantine-Table-tr {
+  border-color: var(--shiva-border);
+}
+.shiva-root .mantine-Table-tr[data-hover]:hover {
+  background: var(--shiva-hover);
+}
+.shiva-root .mantine-NavLink-root {
+  color: var(--shiva-muted);
+}
+.shiva-root .mantine-NavLink-root:hover {
+  background: var(--shiva-hover);
+  color: var(--shiva-text);
+}
+.shiva-root .mantine-NavLink-root[data-active] {
+  background: var(--shiva-hover);
+  color: var(--shiva-accent);
+}
+.shiva-root .mantine-SegmentedControl-root {
+  background: var(--shiva-input);
+}
+.shiva-root .mantine-SegmentedControl-label {
+  color: var(--shiva-muted);
+}
+.shiva-root .mantine-SegmentedControl-label[data-active] {
+  color: var(--shiva-text);
+}
+.shiva-root .mantine-SegmentedControl-indicator {
+  background: var(--shiva-surface);
+}
+.shiva-root .shiva-preset {
+  width: 100%;
+  text-align: left;
+  border: 1px solid var(--shiva-border);
+  background: var(--shiva-surface);
+  color: var(--shiva-text);
+  padding: var(--shiva-card-padding);
+  border-radius: var(--shiva-radius);
+  transition: border-color 120ms ease;
+}
+.shiva-root .shiva-wallpaper-pick {
+  display: block;
+  width: 100%;
+  border: 2px solid transparent;
+  border-radius: var(--shiva-radius);
+  padding: 2px;
+}
+.shiva-root .shiva-wallpaper-pick:hover,
+.shiva-root .shiva-wallpaper-pick[data-selected="true"] {
+  border-color: var(--shiva-accent);
+}
+.shiva-root .shiva-wallpaper-asset {
+  min-width: 0;
+}
+.shiva-root .mantine-Input-input:focus-within,
+.shiva-root .mantine-Input-input[data-focused] {
+  border-color: var(--shiva-accent);
+}
+.shiva-root .shiva-preset:hover,
+.shiva-root .shiva-preset[data-selected="true"] {
+  border-color: var(--shiva-accent);
+}
+.shiva-root .shiva-preset-preview {
+  height: 82px;
+  border-radius: 9px;
+  padding: 12px;
+  overflow: hidden;
+}
+.shiva-root .shiva-preview-bar {
+  height: 8px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+.shiva-root .shiva-appearance-actions {
+  position: sticky;
+  bottom: 12px;
+  z-index: 20;
+  background: var(--shiva-surface);
+  border: 1px solid var(--shiva-border);
+  border-radius: var(--shiva-radius);
+  padding: 14px 18px;
+  box-shadow: var(--shiva-shadow);
+}
+.shiva-root[data-effects="reduced"] {
+  background-attachment: scroll;
+}
+.shiva-root[data-effects="reduced"] *,
+.shiva-root[data-effects="reduced"] *::before,
+.shiva-root[data-effects="reduced"] *::after {
+  transition-duration: 0ms !important;
+  animation-duration: 0ms !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .shiva-root[data-mantine-color-scheme] {
+    --shiva-glass: none;
+    --shiva-shadow: none;
+    --shiva-panel: var(--shiva-surface);
+    --shiva-sidebar: var(--shiva-sidebar-opaque);
+    --shiva-header: var(--shiva-header-opaque);
+    background-attachment: scroll;
+  }
+  .shiva-root *,
+  .shiva-root *::before,
+  .shiva-root *::after {
+    transition-duration: 0ms !important;
+    animation-duration: 0ms !important;
+  }
+}
+@media (max-width: 720px) {
+  .shiva-root[data-mantine-color-scheme] {
+    --shiva-glass: none;
+    --shiva-shadow: none;
+    --shiva-panel: var(--shiva-surface);
+    --shiva-sidebar: var(--shiva-sidebar-opaque);
+    --shiva-header: var(--shiva-header-opaque);
+    background-attachment: scroll;
+  }
+  .shiva-root .mantine-Button-root,
+  .shiva-root .mantine-ActionIcon-root,
+  .shiva-root .mantine-SegmentedControl-label,
+  .shiva-root .mantine-Tabs-tab {
+    min-height: 44px;
+  }
+  .shiva-root .mantine-ActionIcon-root {
+    min-width: 44px;
+  }
+  .shiva-root .shiva-appearance-actions {
+    bottom: 6px;
+    padding: 12px;
+  }
+}

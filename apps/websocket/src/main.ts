@@ -11,6 +11,8 @@ const logger = createLogger({ module: "websocketMain" });
 
 const wss = new WebSocketServer({
   port: 3001,
+  // SHIVA: source startup explicitly keeps the embedded service on loopback.
+  host: process.env.SHIVA_WEBSOCKET_HOST,
 });
 wss.on("error", (error) => {
   logger.error(new Error("WebSocket server error", { cause: error }));

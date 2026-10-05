@@ -3,6 +3,7 @@ import { lazy } from "@trpc/server";
 import { createTRPCRouter } from "./trpc";
 
 export const appRouter = createTRPCRouter({
+  shiva: lazy(() => import("./router/shiva").then((mod) => mod.shivaRouter)),
   assistant: lazy(() => import("./router/assistant").then((mod) => mod.assistantRouter)),
   user: lazy(() => import("./router/user").then((mod) => mod.userRouter)),
   group: lazy(() => import("./router/group").then((mod) => mod.groupRouter)),
