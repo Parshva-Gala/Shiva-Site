@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Combobox, Group, InputBase, Loader, ScrollArea, Text, useCombobox } from "@mantine/core";
-import { IconCheck } from "@tabler/icons-react";
+import { IconCheck, IconLanguage } from "@tabler/icons-react";
 
 import type { SupportedLanguage } from "@homarr/translation";
 import { localeConfigurations, supportedLanguages } from "@homarr/translation";
@@ -79,7 +79,11 @@ const OptionItem = ({
 }) => (
   <Group wrap="nowrap" justify="space-between">
     <Group wrap="nowrap">
-      <LanguageIcon icon={localeConfigurations[localeKey].icon} />
+      {process.env.SHIVA_LOCAL_WEBSOCKET === "true" && localeConfigurations[localeKey].icon.type === "custom" ? (
+        <IconLanguage size="1.3333em" aria-hidden />
+      ) : (
+        <LanguageIcon icon={localeConfigurations[localeKey].icon} />
+      )}
       <Group wrap="nowrap" gap="xs">
         <Text>{localeConfigurations[localeKey].name}</Text>
         <Text size="xs" c="dimmed" inherit>

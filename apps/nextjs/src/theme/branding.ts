@@ -2,7 +2,7 @@ import type { MantineColorsTuple, MantineThemeOverride } from "@mantine/core";
 import { createTheme, darken, lighten, mergeThemeOverrides } from "@mantine/core";
 
 import type { ServerSettings } from "@homarr/server-settings";
-import { theme as homarrTheme } from "@homarr/ui";
+import { theme as homarrTheme } from "@homarr/ui/theme";
 
 export const generateColorScale = (hex: string) => {
   const lightnessSteps = [-0.25, -0.2, -0.15, -0.1, -0.05, 0, 0.05, 0.1, 0.15, 0.2] as const;

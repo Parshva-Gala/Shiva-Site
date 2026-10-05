@@ -32,6 +32,7 @@ import { defaultByteUnitSystem } from "@homarr/common";
 import type { ByteUnitSystem } from "@homarr/common";
 import type { CustomWidgetSecretKind } from "@homarr/custom-widgets/core";
 import { defaultHeaderPreferencesSerialized } from "@homarr/validation/header-preferences";
+import type { ShoppingInput } from "@homarr/validation/shiva";
 
 export * from "@homarr/core/infrastructure/certificates/hostnames/db/sqlite";
 
@@ -73,6 +74,46 @@ export const users = sqliteTable("user", {
   completedManageTour: int({ mode: "boolean" }).default(false).notNull(),
   completedBoardTour: int({ mode: "boolean" }).default(false).notNull(),
 });
+
+// SHIVA native data stays in Homarr's database and follows its user lifecycle.
+export const shivaSettings = sqliteTable("shiva_settings", {
+  userId: text()
+    .notNull()
+    .primaryKey()
+    .references(() => users.id, { onDelete: "cascade" }),
+  settings: text().notNull(),
+  revision: int().default(0).notNull(),
+  updatedAt: int({ mode: "timestamp_ms" }).notNull(),
+});
+
+export const shivaShoppingRecords = sqliteTable(
+  "shiva_shopping_record",
+  {
+    id: text().notNull().primaryKey(),
+    userId: text()
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    name: text().notNull(),
+    category: text().notNull(),
+    priority: text().$type<ShoppingInput["priority"]>().notNull(),
+    estimatedPriceMinor: int(),
+    currency: text().$type<ShoppingInput["currency"]>().notNull(),
+    stage: text().$type<ShoppingInput["stage"]>().notNull(),
+    notes: text().notNull(),
+    url: text().notNull(),
+    createdAt: int({ mode: "timestamp_ms" }).notNull(),
+    updatedAt: int({ mode: "timestamp_ms" }).notNull(),
+  },
+  (record) => ({
+    userUpdatedAtIdx: index("shiva_shopping_record__user_id_updated_at_idx").on(
+      record.userId,
+      record.updatedAt,
+      record.id,
+    ),
+    userStageIdx: index("shiva_shopping_record__user_id_stage_idx").on(record.userId, record.stage),
+    userCategoryIdx: index("shiva_shopping_record__user_id_category_idx").on(record.userId, record.category),
+  }),
+);
 
 export const accounts = sqliteTable(
   "account",

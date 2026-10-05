@@ -32,9 +32,15 @@ const nextConfig: NextConfig = {
   agentRules: false,
   env: {
     HOMARR_VERSION: process.env.HOMARR_VERSION ?? "unknown",
+    // Source startup has no Nginx proxy. Only expose this nonsecret mode flag.
+    SHIVA_LOCAL_WEBSOCKET: process.env.SHIVA_LOCAL_WEBSOCKET === "true" ? "true" : "false",
   },
-  output: "standalone",
+  // Local source startup uses next start; containers retain the upstream bundle.
+  output: process.env.SHIVA_LOCAL_WEBSOCKET === "true" ? undefined : "standalone",
   reactStrictMode: true,
+  // NextURL canonicalizes loopback IPs to localhost. Keeping the original URL
+  // prevents next-intl rewrites being treated as external on a 127.0.0.1 source server.
+  skipProxyUrlNormalize: process.env.SHIVA_LOCAL_WEBSOCKET === "true",
   // react compiler breaks mantine-react-table, so disabled for now
   //reactCompiler: true,
   /** We already do typechecking as separate tasks in CI */
@@ -45,6 +51,7 @@ const nextConfig: NextConfig = {
    */
   serverExternalPackages: ["dockerode", "isomorphic-dompurify", "jsdom", "better-sqlite3"],
   experimental: {
+    webpackMemoryOptimizations: process.env.SHIVA_LOCAL_WEBSOCKET === "true",
     optimizePackageImports: ["@mantine/core", "@mantine/hooks", "@tabler/icons-react"],
     preloadEntriesOnStart: true,
     turbopackFileSystemCacheForBuild: true,
@@ -106,7 +113,7 @@ const nextConfig: NextConfig = {
               frame-ancestors *;
               frame-src *;
               form-action 'self';
-              img-src * data:;
+              img-src * data:${process.env.SHIVA_LOCAL_WEBSOCKET === "true" ? " blob:" : ""};
               font-src * data:;
               media-src * data: blob:;
             `

@@ -1,5 +1,7 @@
 import type { RequestContext, ResponseContext } from "@kubernetes/client-node";
 
+import { env as commonEnv } from "@homarr/common/env";
+
 import { KubernetesClient } from "../kubernetes/kubernetes-client";
 
 export type RuntimeCapability =
@@ -63,17 +65,19 @@ export const probeRuntimeCapabilitiesAsync = async ({
         .then((version) => ({ status: "available" as const, detail: version.gitVersion }))
         .catch(() => ({ status: "unavailable" as const }))
     : Promise.resolve({ status: "disabled" as const });
-  const workshopPromise: Promise<RuntimeCapability> = withTimeoutAsync(
-    async (signal) =>
-      await fetchImpl(`${workshopApiUrl.replace(/\/+$/u, "")}/api/health`, {
-        headers: { Accept: "application/json" },
-        signal,
-      }).then((response) => {
-        if (!response.ok) throw new Error(`Workshop health returned ${response.status}`);
-      }),
-  )
-    .then(() => ({ status: "available" as const }))
-    .catch(() => ({ status: "unavailable" as const }));
+  const workshopPromise: Promise<RuntimeCapability> = commonEnv.NO_EXTERNAL_CONNECTION
+    ? Promise.resolve({ status: "disabled" as const })
+    : withTimeoutAsync(
+        async (signal) =>
+          await fetchImpl(`${workshopApiUrl.replace(/\/+$/u, "")}/api/health`, {
+            headers: { Accept: "application/json" },
+            signal,
+          }).then((response) => {
+            if (!response.ok) throw new Error(`Workshop health returned ${response.status}`);
+          }),
+      )
+        .then(() => ({ status: "available" as const }))
+        .catch(() => ({ status: "unavailable" as const }));
 
   const [kubernetes, workshop] = await Promise.all([kubernetesPromise, workshopPromise]);
   return { kubernetes, workshop };

@@ -1,3 +1,4 @@
+import path from "node:path";
 import { migrate } from "drizzle-orm/better-sqlite3/migrator";
 
 import { createSharedDbConfig, createSqliteDb } from "@homarr/core/infrastructure/db";
@@ -15,7 +16,7 @@ const migrateAsync = async () => {
   migrate(db, { migrationsFolder });
 
   await seedDataAsync(db);
-  await applyCustomMigrationsAsync(db);
+  await applyCustomMigrationsAsync(db, path.resolve(migrationsFolder, "..", "shiva"));
 };
 
 migrateAsync()

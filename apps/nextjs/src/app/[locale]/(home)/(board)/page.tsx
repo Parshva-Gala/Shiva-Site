@@ -1,7 +1,6 @@
-import definition from "../../boards/(content)/(home)/_definition";
+// SHIVA shell hook. Upstream boards remain available under /boards.
+import { redirect } from "next/navigation";
 
-const { generateMetadataAsync: generateMetadata, page } = definition;
-
-export default page;
-
-export { generateMetadata };
+export default function Page() {
+  redirect("/shiva");
+}

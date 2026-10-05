@@ -295,7 +295,7 @@ export async function POST(req: Request) {
     tempDb = new BetterSqlite3(tempPath);
     const drizzleDb = drizzle(tempDb, { casing: DB_CASING, schema });
     migrate(drizzleDb, { migrationsFolder });
-    await applyCustomMigrationsAsync(drizzleDb as unknown as Database);
+    await applyCustomMigrationsAsync(drizzleDb as unknown as Database, path.resolve(migrationsFolder, "..", "shiva"));
 
     const metadataEntry = zip.getEntry("metadata.json");
     if (!metadataEntry) {

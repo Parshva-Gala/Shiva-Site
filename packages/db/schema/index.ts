@@ -40,6 +40,8 @@ export const {
   searchEngines,
   sections,
   serverSettings,
+  shivaSettings,
+  shivaShoppingRecords,
   sessions,
   users,
   verificationTokens,

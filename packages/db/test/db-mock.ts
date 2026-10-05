@@ -4,6 +4,8 @@ import { migrate } from "drizzle-orm/better-sqlite3/migrator";
 
 import { DB_CASING } from "@homarr/core/infrastructure/db/constants";
 
+import { migrateShivaSqlite } from "../migrations/shiva";
+
 import * as sqliteSchema from "../schema/sqlite";
 
 export const createDb = (debug?: boolean) => {
@@ -12,6 +14,8 @@ export const createDb = (debug?: boolean) => {
   migrate(db, {
     migrationsFolder: "./packages/db/migrations/sqlite",
   });
+
+  migrateShivaSqlite(db, "./packages/db/migrations/shiva");
 
   if (debug) {
     console.log("Database created");

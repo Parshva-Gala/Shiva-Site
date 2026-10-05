@@ -114,6 +114,7 @@
     "remark-directive": "catalog:",
     "remark-gfm": "catalog:",
     "sass": "catalog:",
+    "sharp": "catalog:",
     "sql.js": "catalog:",
     "superjson": "catalog:",
     "use-deep-compare-effect": "catalog:",

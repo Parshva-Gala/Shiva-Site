@@ -40,7 +40,9 @@ yarn-error.log*
 
 # local env files
 .env
-.env*.local
+.env.*
+!.env.example
+!.env.sample
 
 # vercel
 .vercel
@@ -94,3 +96,7 @@ homarr-backup*.zip
 
 # PR description screenshots belong on the pull request, not in the repository
 .screenshots/
+
+# SHIVA personal data and local verification artifacts
+data/
+artifacts/

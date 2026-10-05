@@ -4,6 +4,7 @@ import type { DayOfWeek } from "@mantine/dates";
 import { relations } from "drizzle-orm";
 import type { AnyPgColumn } from "drizzle-orm/pg-core";
 import {
+  bigint,
   boolean,
   customType,
   foreignKey,
@@ -44,6 +45,7 @@ import { defaultByteUnitSystem } from "@homarr/common";
 import type { ByteUnitSystem } from "@homarr/common";
 import type { CustomWidgetSecretKind } from "@homarr/custom-widgets/core";
 import { defaultHeaderPreferencesSerialized } from "@homarr/validation/header-preferences";
+import type { ShoppingInput } from "@homarr/validation/shiva";
 
 const customBlob = customType<{ data: Buffer }>({
   dataType() {
@@ -91,6 +93,46 @@ export const users = pgTable("user", {
   completedManageTour: boolean().default(false).notNull(),
   completedBoardTour: boolean().default(false).notNull(),
 });
+
+// SHIVA native data stays in Homarr's database and follows its user lifecycle.
+export const shivaSettings = pgTable("shiva_settings", {
+  userId: varchar({ length: 64 })
+    .notNull()
+    .primaryKey()
+    .references(() => users.id, { onDelete: "cascade" }),
+  settings: text().notNull(),
+  revision: integer().default(0).notNull(),
+  updatedAt: timestamp().notNull(),
+});
+
+export const shivaShoppingRecords = pgTable(
+  "shiva_shopping_record",
+  {
+    id: varchar({ length: 64 }).notNull().primaryKey(),
+    userId: varchar({ length: 64 })
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    name: varchar({ length: 120 }).notNull(),
+    category: varchar({ length: 60 }).notNull(),
+    priority: varchar({ length: 16 }).$type<ShoppingInput["priority"]>().notNull(),
+    estimatedPriceMinor: bigint({ mode: "number" }),
+    currency: varchar({ length: 3 }).$type<ShoppingInput["currency"]>().notNull(),
+    stage: varchar({ length: 16 }).$type<ShoppingInput["stage"]>().notNull(),
+    notes: text().notNull(),
+    url: varchar({ length: 2048 }).notNull(),
+    createdAt: timestamp().notNull(),
+    updatedAt: timestamp().notNull(),
+  },
+  (record) => ({
+    userUpdatedAtIdx: index("shiva_shopping_record__user_id_updated_at_idx").on(
+      record.userId,
+      record.updatedAt,
+      record.id,
+    ),
+    userStageIdx: index("shiva_shopping_record__user_id_stage_idx").on(record.userId, record.stage),
+    userCategoryIdx: index("shiva_shopping_record__user_id_category_idx").on(record.userId, record.category),
+  }),
+);
 
 export const accounts = pgTable(
   "account",

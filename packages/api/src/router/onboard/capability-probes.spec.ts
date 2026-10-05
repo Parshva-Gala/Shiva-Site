@@ -1,10 +1,33 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
+const privacy = vi.hoisted(() => ({ NO_EXTERNAL_CONNECTION: false }));
+vi.mock("@homarr/common/env", () => ({ env: privacy }));
+
 import { probeRuntimeCapabilitiesAsync } from "./capability-probes";
 
 describe("probeRuntimeCapabilitiesAsync", () => {
   afterEach(() => {
     vi.useRealTimers();
+    privacy.NO_EXTERNAL_CONNECTION = false;
+  });
+
+  it("reports Workshop disabled without making a request when external connections are disabled", async () => {
+    privacy.NO_EXTERNAL_CONNECTION = true;
+    const fetchImpl = vi.fn<typeof fetch>();
+    const getKubernetesVersionAsync = vi.fn(async () => ({ gitVersion: "synthetic" }));
+    await expect(
+      probeRuntimeCapabilitiesAsync({
+        kubernetesEnabled: false,
+        workshopApiUrl: "https://workshop.example.com",
+        fetchImpl,
+        getKubernetesVersionAsync,
+      }),
+    ).resolves.toEqual({
+      kubernetes: { status: "disabled" },
+      workshop: { status: "disabled" },
+    });
+    expect(fetchImpl).not.toHaveBeenCalled();
+    expect(getKubernetesVersionAsync).not.toHaveBeenCalled();
   });
 
   it("reports independently reachable runtime capabilities", async () => {
