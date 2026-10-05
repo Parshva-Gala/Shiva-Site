@@ -1,0 +1,64 @@
+---
+title: "Calendar"
+description: "Display calendar events and upcoming media releases."
+hide_title: true
+---
+
+import { WidgetInteractionGuide } from "@site/src/components/widgets/interactions";
+
+import { WidgetHeader } from "@site/src/components/widgets/header";
+import { AddingWidget } from "@site/src/components/widgets/adding";
+import { WidgetConfig } from "@site/src/components/widgets/configuration";
+import { WidgetIntegrations } from "@site/src/components/widgets/integrations";
+import { calendarWidget } from ".";
+import { lidarrIntegration } from "@site/docs/integrations/lidarr";
+import { nextcloudIntegration } from "@site/docs/integrations/nextcloud";
+import { homeAssistantIntegration } from "@site/docs/integrations/home-assistant";
+import { radarrIntegration } from "@site/docs/integrations/radarr";
+import { readarrIntegration } from "@site/docs/integrations/readarr";
+import { sonarrIntegration } from "@site/docs/integrations/sonarr";
+import { icalIntegration } from "@site/docs/integrations/ical";
+import currentView from "./img/current-view.png";
+import advancedView from "./img/advanced-view.png";
+
+<WidgetHeader widget={calendarWidget} categories={["Media manager", "Servarr"]} />
+
+The Calendar widget combines events and upcoming releases in a month view. Advanced view shows a grouped event list with
+source, title, location, and description. Healthy integrations remain visible when another source fails.
+
+### Month view
+
+<img src={currentView.src} alt="Calendar month view with marked events" />
+
+### Advanced view
+
+<img src={advancedView.src} alt="Calendar advanced view with grouped events" />
+
+### Supported integrations
+
+<WidgetIntegrations
+  items={[
+    { integration: nextcloudIntegration },
+    { integration: lidarrIntegration },
+    { integration: radarrIntegration },
+    { integration: readarrIntegration },
+    { integration: sonarrIntegration },
+    { integration: icalIntegration },
+    { integration: homeAssistantIntegration },
+  ]}
+/>
+
+### Interactions
+
+- Hover or select a marked date to inspect its events.
+- Use advanced view to browse grouped events by month.
+
+<WidgetInteractionGuide />
+
+### Adding the widget
+
+<AddingWidget />
+
+### Configuration
+
+<WidgetConfig configuration={calendarWidget.configuration} />

@@ -1,0 +1,21 @@
+# SHIVA: upstream jobs are inactive outside homarr-labs/homarr; no target deployment is enabled.
+name: "[Renovate] Validate configuration"
+
+permissions:
+  contents: read
+
+on:
+  pull_request:
+    branches: ["**"]
+    paths: [".github/renovate.json5"]
+
+jobs:
+  renovate-validate:
+    if: ${{ github.repository == 'homarr-labs/homarr' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - uses: actions/checkout@v7
+      - run: |
+          npx --yes --package renovate -- \
+              renovate-config-validator --strict .github/renovate.json5

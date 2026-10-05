@@ -1,0 +1,78 @@
+---
+title: API
+tags:
+  - API
+  - Development
+  - Interface
+---
+
+Use the generated specification under **Management → Tools → API** or the [interactive API reference](/api-reference).
+This page covers contracts that are not obvious from those schemas.
+The in-app reference loads its schema from `/api/openapi?format=scalar` on your Homarr instance. `/api/openapi` provides the raw JSON specification.
+
+![Homarr's API documentation page](../img/api.png)
+
+## Authentication and browser access
+
+API keys are shown once as `<id>.<token>`. Send one in the `ApiKey` header; it acts as its creator and does not expire.
+tRPC accepts the same header. Same-origin browser requests can use the Homarr session cookie.
+
+Cross-origin browser requests require `ApiKey`; they do not use session cookies. Reverse proxies must forward `OPTIONS`
+and preserve CORS headers. An HTTPS API reference cannot call an HTTP-only instance because browsers block mixed content.
+
+## Endpoint constraints
+
+- General pagination and shared search are capped at 100 records.
+- `POST /api/invites` and `invite.createInvite` accept `expirationDate` as a timezone-qualified ISO 8601 string.
+- `GET /api/health/live` is unauthenticated and returns `200` when all dependencies are healthy, `500` otherwise.
+
+`widget.immich.getAlbumPreview` returns at most one image from a selected album. Its input includes `albumId` and
+`randomizePhotos`; it uses the same saved-integration access rules as `widget.immich.getAlbum`. Use `getAlbum` for the
+complete album image list.
+
+## Permissions and results
+
+Requests use the API key owner's permissions. Unauthorized operations return `FORBIDDEN`; resource-aware lists are
+filtered on the server.
+
+`app.all`, `app.getPaginated`, and `app.search` require **Modify all apps** because they include internal URLs. Use
+`app.selectable` for reduced picker data. Integration lists include only accessible integrations; check `hasUseAccess`
+and `hasInteractAccess` before reading data or invoking actions.
+
+Multi-integration queries can return partial data with endpoint-specific failure metadata.
+
+## Board automation
+
+Each board has one Base and one Mobile layout; Mobile uses breakpoint `0`. Other breakpoints must be unique, and Homarr
+uses the highest breakpoint that fits. Reuse canonical layouts and generated IDs returned by save operations.
+
+Integration-backed widgets require use access to each newly selected integration.
+
+`board.addItem` accepts `size: { width, height }` in grid cells (1–24 each), places the item in the first free position
+on every layout, and caps width to the available columns.
+
+`board.updateItemLayout` (`PATCH /api/boards/{boardId}/items/{itemId}/layouts/{layoutId}`) moves or resizes one item in
+one layout without replacing the board. It cannot move the item outside its section or overlap another item/container.
+
+## Docker targets
+
+Docker actions require `{ endpointId, id }` targets from `docker.getContainers`; `endpointId` distinguishes hosts.
+Omit `endpointIds` or pass an empty array to query every configured endpoint.
+
+## Custom Widget resources
+
+Administrators can retrieve the Custom Widget authoring prompt, schema, component catalog, skill, and references under
+`/api/custom-widgets/`. See [agent authoring](/docs/management/custom-widgets/agent-authoring) for the workflow.
+
+## Call any integration API endpoint
+
+`POST /api/integrations/request` is available as tRPC `integration.request` and MCP `integration_request`. Homarr uses
+the saved integration credentials; callers do not supply them. The `path` stays within the saved integration URL, and
+redirects are rejected. See the generated schema for selectors, permissions, and request limits.
+
+Even `GET` can change upstream state. Homarr `200` can contain an upstream failure; inspect `ok`, `status`, and `data`.
+Requests are not retried, so check upstream state after a timeout before retrying a write.
+
+The iCalendar feed integration stores a calendar URL rather than arbitrary HTTP API credentials. TrueNAS uses a WebSocket
+API. Neither works with `integration_request` or Custom Widget integration sources. qBittorrent generic requests require
+a saved API key and qBittorrent 5.2.0 or newer. UniFi generic requests require the controller's HTTPS URL and actual port.
